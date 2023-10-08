@@ -1,0 +1,121 @@
+    <div class="cards-container">
+    </div>
+  </body>
+  <script>
+    const cardsArray = [{
+        title: 'Desierto de la Tatacoa',
+        image: 'tatacoa',
+        cardClassString : 'bg-tatacoa card'
+      },
+      {
+        title: 'Pico Cristobal Cólon',
+        image: 'colon',
+        cardClassString : 'bg-colon card'
+      },
+      {
+        title: 'Sierra de la Macarena, Caño cristales',
+        image: 'cristales',
+        cardClassString : 'bg-cristales card'
+      },
+      {
+        title: 'Piedra del Peñol',
+        image: 'peñol',
+        cardClassString : 'bg-peñol card'
+      },
+      {
+        title: 'Isla de San Andrés',
+        image: 'isla',
+        cardClassString : 'bg-isla card'
+      }
+    ]
+
+    const cardsContainer = document.querySelector('.cards-container')
+    function mounted () {
+      addCards()
+    }
+
+    function addCards () {
+      cardsArray.forEach(card => {
+        const cardElement = document.createElement('div')
+        for (const cardClass of card.cardClassString.split(' ')) {
+          cardElement.classList.add(cardClass)
+        }
+        cardElement.innerHTML = `<h3>${card.title}</h3>`
+        cardElement.addEventListener('click', (e) => {
+          const currentCard = e.target
+          if (currentCard.classList.contains('selected')) {
+            return
+          }
+          cardElement.classList.toggle('selected')
+          removeSelectedOtherCards(cardElement)
+        })
+        cardsContainer.appendChild(cardElement)
+      })
+      const cards = document.querySelectorAll('.card')
+      cards[0].classList.add('selected')
+    }
+
+    function removeSelectedOtherCards (currentCard) {
+      const cards = document.querySelectorAll('.card')
+      cards.forEach(card => {
+        if (card !== currentCard) {
+          card.classList.remove('selected')
+        }
+      })
+    }
+
+    mounted()
+  </script>
+  <style>
+    .cards-container {
+      display: flex;
+      height: 100vh;
+      width: 90vw;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin: 0 auto;
+    
+      transition: all .3s ease-in-out;
+    }
+    
+    .card {
+      background-size: cover;
+      background-position: center;
+      height: 80vh;
+      border-radius: 50px;
+      flex: 0.5;
+      position: relative;
+    
+      cursor: pointer;
+      -webkit-transition: all .5s ease-in;
+      transition: all .5s ease-in;
+    }
+    
+    .card h3 {
+      position: absolute;
+      bottom: 15px;
+      left: 20px;
+    
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: left;
+      
+      background-color: rgba(0, 0, 0, .5);
+      padding: 0 20px;
+      border-radius: 10px;
+      opacity: 0;
+    }
+    
+    .card.selected {
+      flex: 5;
+      cursor: default;
+    }
+    
+    .card.selected h3{
+      transition: opacity 0.3s ease-in 0.4s;
+      opacity: 1;
+    }
+  </style>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/images/Go-Logo_Fuchsia.svg">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            backgroundImage: {
+              'tatacoa': 'url("/images/desierto_tatacoa.webp")',
+              'colon': 'url("/images/pico_colon.webp")',
+              'cristales': 'url("/images/caño_cristales.webp")',
+              'peñol': 'url("/images/piedra_peñol.webp")',
+              'isla': 'url("/images/san_andres_isla.webp")',
+              'mononoke': 'url("/images/mononoke.webp")',
+              'piracy_flag': 'url("/images/piracy_flag.webp")',
+              'original': 'url("/images/original.webp")',
+            }
+          }
+        }
+      }
+    </script>
+    <title>Go served</title>
+  </head>
+  <body class="dark:text-white">
+    <header>
+      <nav class="flex py-2 justify-between px-2 bg-slate-900 fixed w-full z-50">
+        <div class="flex items-center text-white">
+          <a class="px-2" href="/">Home</a> |
+          <a class="px-2 mr-5" href="/challenges">First challenge</a>
+    
+          {{ with .isChallengePage }}
+            <button id="prevChallenge">
+              <svg class="w-6 h-6 mr-4 stroke-transparent fill-blue-900 hover:fill-blue-100 transition-all" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953l7.108-4.062A1.125 1.125 0 0121 8.688v8.123zM11.25 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953L9.567 7.71a1.125 1.125 0 011.683.977v8.123z" />
+              </svg>
+            </button>
+      
+            <button id="nextChallenge">
+              <svg class="w-6 h-6 stroke-transparent fill-blue-900 hover:fill-blue-100 transition-all" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z" />
+              </svg>
+            </button>
+          {{ end }}
+        </div>
+        <SwitchMode />
+      </nav>
+    </header>
+    <script>
+      const prevChallengeButton = document.getElementById('prevChallenge')
+      const nextChallengeButton = document.getElementById('nextChallenge')
+
+      prevChallengeButton.addEventListener('click', () => {
+        const currentChallenge = window.location.pathname.split('/')[2] || 'day_1'
+        if (currentChallenge === 'day_1') {
+          navigateToPage('day_30')
+          return
+        }
+
+        const currentChallengeNumber = parseInt(currentChallenge.split('_')[1])
+        const prevChallenge = currentChallengeNumber - 1
+        navigateToPage(`day_${prevChallenge}`)
+      })
+
+      nextChallengeButton.addEventListener('click', () => {
+        const currentChallenge = window.location.pathname.split('/')[2] || 'day_1'
+        if (currentChallenge === 'day_30') {
+          navigateToPage('day_1')
+          return
+        }
+
+        const currentChallengeNumber = parseInt(currentChallenge.split('_')[1])
+        const nextChallenge = currentChallengeNumber + 1
+        navigateToPage(`day_${nextChallenge}`)
+      })
+
+      async function navigateToPage(page) {
+        // Get the root element
+        const root = document.querySelector('#root')
+        const redirectionPath = '/challenges/' + page + '/false'
+        const response = await fetch(window.location.origin + redirectionPath)
+        
+        let newContent = await response.text()
+        if (response.status !== 200) {
+          newContent = `
+            <body class="bg-gray-100">
+              <div class="flex flex-col h-screen">
+                <div class="flex-grow"></div>
+                <div class="flex flex-col items-center justify-center">
+                  <h1 class="text-6xl font-bold text-gray-800 dark:text-gray-400">404</h1>
+                  <p class="text-xl text-gray-600 dark:text-gray-200">Page not found</p>
+                  <form class="w-full max-w-sm">
+                    <div class="flex items-center border-b border-b-2 border-gray-500 py-2">
+                      <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Search">
+                      <button class="flex-shrink-0 bg-gray-500 hover:bg-gray-700 border-gray-500 hover:border-gray-700 text-sm border-4 text-white py-1 px-2 rounded" type="button">
+                        Search
+                      </button>
+                    </div>
+                  </form>
+                  <div class="mt-4">
+                    <a href="/" class="text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-400">Home</a>
+                    <span class="text-gray-400 mx-2">/</span>
+                    <a href="https://www.linkedin.com/in/miguel-antonio-buritica-vargas/" target="_blank" class="text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-400">Contact</a>
+                    <span class="text-gray-400 mx-2">/</span>
+                    <a href="#" class="text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-gray-400">About</a>
+                  </div>
+                </div>
+                <div class="flex-grow"></div>
+              </div>
+            </body>
+          `
+        }
+
+        if (!document.startViewTransition) {
+          root.innerHTML = newContent
+          // run the js code that already exist in the newContent
+          const scriptTags = root.getElementsByTagName('script');
+          for (let i = 0; i < scriptTags.length; i++) {
+            eval(scriptTags[i].innerText);
+          }
+
+          window.history.pushState({}, '', `/challenges/${page}`)
+          return
+        }
+
+        // Start the view transition
+        const transition = document.startViewTransition(() => {
+          // Update the page content
+          // page value is /challenges/day_1
+          root.innerHTML = newContent
+          // run the js code that already exist in the newContent
+          const scriptTags = root.getElementsByTagName('script');
+          for (let i = 0; i < scriptTags.length; i++) {
+            eval(scriptTags[i].innerText);
+          }
+
+          window.history.pushState({}, '', `/challenges/${page}`)
+        });
+      }
+    </script>
+
+    <style>
+      :root {
+        color-scheme: light dark
+      }
+    </style>
+    <main id="root">
