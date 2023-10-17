@@ -1,58 +1,36 @@
-    <div class="cards-container">
-    </div>
+    <main class="cards-container">
+      <article class="card selected" style="background-image: url('/images/desierto_tatacoa.webp');">
+        <h3>Desierto de la Tatacoa</h3>
+      </article>
+      <article class="card" style="background-image: url('/images/pico_colon.webp');">
+        <h3>Pico Cristobal Cólon</h3>
+      </article>
+      <article class="card" style="background-image: url('/images/caño_cristales.webp');">
+        <h3>Sierra de la Macarena, Caño cristales</h3>
+      </article>
+      <article class="card" style="background-image: url('/images/piedra_peñol.webp');">
+        <h3>Piedra del Peñol</h3>
+      </article>
+      <article class="card" style="background-image: url('/images/san_andres_isla.webp');">
+        <h3>Isla de San Andrés</h3>
+      </article>
+    </main>
   </body>
   <script>
-    const cardsArray = [{
-        title: 'Desierto de la Tatacoa',
-        image: 'tatacoa',
-        cardClassString : 'bg-tatacoa card'
-      },
-      {
-        title: 'Pico Cristobal Cólon',
-        image: 'colon',
-        cardClassString : 'bg-colon card'
-      },
-      {
-        title: 'Sierra de la Macarena, Caño cristales',
-        image: 'cristales',
-        cardClassString : 'bg-cristales card'
-      },
-      {
-        title: 'Piedra del Peñol',
-        image: 'peñol',
-        cardClassString : 'bg-peñol card'
-      },
-      {
-        title: 'Isla de San Andrés',
-        image: 'isla',
-        cardClassString : 'bg-isla card'
-      }
-    ]
-
     const cardsContainer = document.querySelector('.cards-container')
     function mounted () {
-      addCards()
-    }
+      const cards = document.querySelectorAll('.card')
 
-    function addCards () {
-      cardsArray.forEach(card => {
-        const cardElement = document.createElement('div')
-        for (const cardClass of card.cardClassString.split(' ')) {
-          cardElement.classList.add(cardClass)
-        }
-        cardElement.innerHTML = `<h3>${card.title}</h3>`
-        cardElement.addEventListener('click', (e) => {
+      cards.forEach(card => {
+        card.addEventListener('click', (e) => {
           const currentCard = e.target
           if (currentCard.classList.contains('selected')) {
             return
           }
-          cardElement.classList.toggle('selected')
-          removeSelectedOtherCards(cardElement)
+          card.classList.toggle('selected')
+          removeSelectedOtherCards(card)
         })
-        cardsContainer.appendChild(cardElement)
       })
-      const cards = document.querySelectorAll('.card')
-      cards[0].classList.add('selected')
     }
 
     function removeSelectedOtherCards (currentCard) {
@@ -97,7 +75,7 @@
       bottom: 15px;
       left: 20px;
     
-      color: white;
+      color: var(--primary-50);
       font-size: 1.5rem;
       font-weight: 700;
       text-align: left;

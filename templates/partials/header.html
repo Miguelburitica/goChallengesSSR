@@ -6,26 +6,24 @@
     <link rel="icon" type="image/svg+xml" href="/images/Go-Logo_Fuchsia.svg">
     <title>Go served</title>
     <link rel="stylesheet" type="text/css" href="styles/normalize.css" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="dark:text-white">
     <header class="header-document">
       <nav>
         <ul>
           <a href="/">Home</a> |
-          <a href="/challenges">First challenge</a>
+          <a href="/challenges" style="margin-right: 16px;">First challenge</a>
     
           {{ with .isChallengePage }}
-            <button id="prevChallenge">
-              <svg class="navigation-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953l7.108-4.062A1.125 1.125 0 0121 8.688v8.123zM11.25 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953L9.567 7.71a1.125 1.125 0 011.683.977v8.123z" />
-              </svg>
-            </button>
+            <svg id="prevChallenge" class="navigation-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953l7.108-4.062A1.125 1.125 0 0121 8.688v8.123zM11.25 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953L9.567 7.71a1.125 1.125 0 011.683.977v8.123z" />
+            </svg>
       
-            <button id="nextChallenge">
-              <svg class="navigation-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z" />
-              </svg>
-            </button>
+            <svg id="nextChallenge" class="navigation-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z" />
+            </svg>
           {{ end }}
         </ul>
         <SwitchMode />
@@ -126,14 +124,29 @@
 
     <style>
       :root {
+        color-scheme: light dark;
+        --primary-50: #eefcfd;
+        --primary-100: #d5f5f8;
+        --primary-200: #afebf2;
+        --primary-300: #6ad7e5;
+        --primary-400: #3ac1d6;
+        --primary-500: #1fa5bb;
+        --primary-600: #1c859e;
+        --primary-700: #1e6b80;
+        --primary-800: #20586a;
+        --primary-900: #1f4a5a;
+        --primary-950: #0f303d;
+        font-family: 'Courier New', Courier, monospace;
+      }
+
+      * {
         box-sizing: border-box;
-        color-scheme: light dark
       }
 
       .header-document nav {
         display: flex;
         justify-content: space-between;
-        background-color: darkslateblue;
+        background-color: var(--primary-700);
         position: fixed;
         width: 100%;
         z-index: 50;
@@ -154,19 +167,21 @@
       }
 
       .header-document nav ul a:hover {
-        color: dodgerblue;
+        color: var(--primary-200);
       }
 
-      .header-document > .navigation-arrow {
-        width: 14px;
-        height: 14px;
+      .header-document .navigation-arrow {
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+        cursor: pointer;
         stroke: transparent;
-        fill: dodgerblue;
+        fill: var(--primary-300);
         transition: fill ease .3s;
       }
 
-      .header-document > .navigation-arrow:hover {
-        fill: blue;
+      .header-document .navigation-arrow:hover {
+        fill: var(--primary-500);
       }
     </style>
     <main id="root">
